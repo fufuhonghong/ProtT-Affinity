@@ -5,17 +5,11 @@ import numpy as np
 from tqdm import tqdm
 from transformers import T5Tokenizer, T5EncoderModel
 
-# ===============================
-
-
 os.environ['HF_HOME'] = r"D:\huggingface_cache"  #  
 print(f"🔹 Hugging Face : {os.environ['HF_HOME']}")
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f" : {device}")
-
-# ===============================
-
 
 LOCAL_MODEL_PATH = os.path.join(os.environ['HF_HOME'], "hub", "models--Rostlab--prot_t5_xl_uniref50")
 if os.path.exists(LOCAL_MODEL_PATH):
@@ -25,13 +19,11 @@ else:
     model_name_or_path = "Rostlab/prot_t5_xl_uniref50"
     print(f"  Hugging Face : {model_name_or_path}")
 
-# ===============================
 
 tokenizer = T5Tokenizer.from_pretrained(model_name_or_path, do_lower_case=False)
 model = T5EncoderModel.from_pretrained(model_name_or_path).to(device)
 model.eval()
 
-# ===============================
 
 
 STANDARD_AA = set("ACDEFGHIKLMNPQRSTVWY")
@@ -49,7 +41,7 @@ def get_prott5_embedding(seq):
         emb = model(**ids).last_hidden_state.mean(dim=1)
     return emb.squeeze().cpu().numpy() 
 
-# ===============================
+
 
 df = pd.read_csv("./test2.csv")  
 
