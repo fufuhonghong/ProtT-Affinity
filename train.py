@@ -1,7 +1,3 @@
-# =========================
-# cross_attention_train_test_fixed.py
-# =========================
-
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -58,7 +54,6 @@ if EMB_DIM_PCA is not None:
         embB_pca = pcaB.fit_transform(embB)
     embA, embB = embA_pca, embB_pca
 
-# 转Tensor
 X_A = torch.tensor(embA, dtype=torch.float32)
 X_B = torch.tensor(embB, dtype=torch.float32)
 y_tensor = torch.tensor(y_scaled, dtype=torch.float32)
@@ -144,7 +139,6 @@ for epoch in range(1, EPOCHS+1):
         epoch_loss += loss.item()*batch_A.size(0)
     epoch_loss /= X_A_train.size(0)
 
-    # 验证
     model.eval()
     with torch.no_grad():
         val_pred = model(X_A_test,X_B_test)
